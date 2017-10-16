@@ -1,0 +1,63 @@
+<!-- 27. hover effect
+hover effect를 구현하라. 마우스가 .box 위에 올라오면 .box의 배경색을 blue로, 
+마우스가 .box에서 빠져나가면 .box의 배경색을 원래로 되돌린다. 
+단, pure javascript 버전과 jQuery 버전 두가지를 완성하여야 한다.  -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>hover effect</title>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <p>hover effect를 구현하라. 마우스가 .box 위에 올라오면 .box의 배경색을 blue로, 마우스가 .box에서 빠져나가면 .box의 배경색을 원래로 되돌린다.</p>
+  <div class="box"></div>
+  <script>
+    var elem = document.getElementsByClassName("box")[0];
+    elem.addEventListener('mouseover', function() {
+      elem.style.backgroundColor = 'blue';
+    })
+    elem.addEventListener('mouseout', function() {
+      //this도 가능
+      this.style.backgroundColor = 'red';
+    })
+  </script>
+</body>
+
+</html>
+
+<!-- 더하기 결과 확인 -->
+<html>
+
+<body>
+  <label for='sumCheck'>더하기 결과 확인 </label>
+  <input type='text' name="a">+
+  <input type='text' name="b">=
+  <input type='text' name="result">
+  <button>확인</button>
+  <script>
+    document.querySelector('input[type ="button"]')
+      .addEventListener('click', function() {
+        var n1Elem = document.getElementsByTagName('input')[0].value;
+        var n2Elem = document.getElementsByTagName('input')[1].value;
+        var n3Elem = document.getElementsByTagName('input')[2].value;
+        console.log(n1Elem);
+        console.log(n2Elem);
+        console.log(n3Elem);
+        (n1Elem * 1) + (n2Elem * 1) == (n3Elem * 1) ? alert("true입니다"): alert("false입니다");
+      })
+  </script>
+</body>
+
+</html>
