@@ -1,0 +1,99 @@
+(function () {
+    let todos;
+    const Document = '';
+    const toDoList = Document.getElementById('todo-list');
+    const inputBox = Document.getElementById('input-todo');
+
+    const render = function () {
+        let html = '';
+
+        todos.forEach((todo) => {
+        // checked요소 수정하기
+            const checked = todos.completed ? 'checked' : '';
+            html += `<li class="list-group-item">
+      <div class="hover-anchor"><a class="hover-action text-muted"><span class="glyphicon glyphicon-remove-circle pull-right" 
+      data-id="$ { todo.id }"></span></a><label class="i-checks" for="${todo.id}"'"><input type="checkbox" id="'${todo.id};'"'${checked};'><i></i><span>'
+      ${todo.content};'</span></label></div></li>';` });
+        toDoList.innerHTML = html; };
+
+    const getTodo = function () {
+        todos = [
+            { id: 3, content: 'HTML', completed: false },
+            { id: 2, content: 'CSS', completed: false },
+            { id: 1, content: 'JAVASCRIPT', completed: false },
+        ];
+        render();
+    };
+
+    const maxId = function () {
+    // var idxArr = todos.map(function(todo) {
+    //   return todo.id;
+    // })
+    // console.log(idxArr);
+    // idxArr에서 가장 큰 값만 산출, 반환값을 저장할 변수 생성
+    // var result = Math.max.apply('', idxArr);
+    // return result + 1;
+
+        return Math.max.apply('', todos.map((todo) => {
+            return todo.id;
+        }) + 1);
+    };
+
+    // 요소에 추가 하기
+    const addToDo = function () {
+        // 입력값을 content에 넣기
+        const content = inputBox.value;
+        inputBox.value = '';
+        // 배열 요소에 넣기 전 max아이디 넣기.
+        if (!todos || todos === undefined) {
+            todos = [{ id: 1, content: content, completed: false }];
+        } else {
+            console.log('here');
+            todos = [{ id: maxId(), content: content, completed: false }].concat(todos);
+        }
+        render();
+        console.log('[get]\n', todos);
+    };
+    //  체크박스 체크
+    const toggleTodoComplete = function (id) {
+    // 원본 내용 변화를 안 주고, 각 인자마다 데이터를 받을 수 있기 때문.
+        todos = todos.map((todo) => {
+        // 뒤에서 오는 인자값을 map한다.
+            return todo.id === id ? Object.assign({}, todo, { completed: !todo.completed }) : todo;
+        });
+        render();
+        console.log('[TOGGLE-COMP]\n', todos);
+    };
+
+    const removeId = function (id) {
+        todos = todos.filter((todo) => { return todo.id !== id; });
+        render();
+        console.log('[RM]\n', todos);
+    };
+
+    //  이유? 스트링으로 된 html 구조를 배열과 붙인다. 어떻게? 
+
+
+    // 입력값 이벤트 확인
+    inputBox.addEventListener('keyup', (e) => {
+        if (e.keyCode !== 13 || inputBox.value.trim() === '') return;
+        addToDo();
+    });
+    // 페이지 로드
+    Window.addEventListener('load', getTodo);
+
+    // *체크박스 지우기
+    toDoList.addEventListener('change', (e) => {
+    // input태그 접근 
+        toggleTodoComplete(e.target.id);
+    });
+
+    // 사용자 정의 프로퍼티를 모아놓은 곳 dataset.
+    toDoList.addEventListener('click', (e) => {
+        const { target } = e.target;
+        if (!target || target.nodeName !== 'SPAN' || target.parentNode.nodeName === 'LABEL') 
+            return;
+        removeId(target.dataset.id);
+    });
+
+}());
